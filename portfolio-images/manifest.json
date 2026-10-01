@@ -1,0 +1,222 @@
+{
+  "method": "Headless Chrome captures of original source text, recorded startup, and clearly labeled offline synthetic demo outputs.",
+  "project_source_modified": false,
+  "execution": {
+    "entrypoint": "main.py",
+    "stock": "BMW",
+    "exit_code": 1,
+    "elapsed_seconds": 7.29,
+    "runtime": "Python 3.11.15 in the local capture environment",
+    "bootstrap": "Added the existing site-packages with site.addsitedir; executed main.py unchanged.",
+    "terminal_columns": 132
+  },
+  "runtime_result": "Groq returned model_not_found for llama-3.3-70b-versatile. The run started but did not finish either task.",
+  "images": [
+    {
+      "image": "01-execution-startup.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "RECORDED EXECUTION · STARTUP",
+      "sources": [
+        ".portfolio-build/run.ansi"
+      ],
+      "source_sha256": {}
+    },
+    {
+      "image": "02-crew-orchestration.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "SOURCE",
+      "sources": [
+        "crew.py",
+        "main.py"
+      ],
+      "source_sha256": {
+        "crew.py": "f41ee2d07c6cefef77b2996d50da56f01893919dc0a217d5b853165d7ca20373",
+        "main.py": "dd1b503319809e637285ac9279c31580bd61f565d250f5cf50f6361098b4a0d2"
+      }
+    },
+    {
+      "image": "03-financial-market-analyst.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "SOURCE",
+      "sources": [
+        "agents/analyst_agent.py"
+      ],
+      "source_sha256": {
+        "agents/analyst_agent.py": "888648bb4b595370fffaea7e98c91cd66d5a9d45bff1408372634853c5e4df2d"
+      }
+    },
+    {
+      "image": "04-strategic-stock-trader.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "SOURCE",
+      "sources": [
+        "agents/trader_agent.py"
+      ],
+      "source_sha256": {
+        "agents/trader_agent.py": "b8f3e1195cd7c901ffaf187df6d64c9b647f52b7d4a6f40efa2fc6caf78df306"
+      }
+    },
+    {
+      "image": "05-live-stock-information-tool.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "SOURCE",
+      "sources": [
+        "tools/stock_research_tool.py"
+      ],
+      "source_sha256": {
+        "tools/stock_research_tool.py": "e45464b5d1ffa67a98a58660ba66b810271bd1667c2ff7a47c0170aa2a58fe7a"
+      }
+    },
+    {
+      "image": "06-analysis-and-trading-tasks.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "SOURCE",
+      "sources": [
+        "tasks/analyse_task.py",
+        "tasks/trade_task.py"
+      ],
+      "source_sha256": {
+        "tasks/analyse_task.py": "946a2a9700373409036cb76258620125e9b1f35ef7495404c7d2505d1948fdce",
+        "tasks/trade_task.py": "06a30006c98c058e7caac32ccbd503cb8520860d522695a947a7c923b77227f9"
+      }
+    },
+    {
+      "image": "07-demo-crew-startup.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "DEMO — SYNTHETIC RESULTS",
+      "synthetic": true,
+      "sources": [
+        ".portfolio-build\\demo-results\\07-demo-crew-startup.txt",
+        "portfolio-images/demo-results.json"
+      ],
+      "display_formatter": "crewai-env\\Lib\\site-packages\\crewai\\events\\utils\\console_formatter.py",
+      "live_agent_execution": false,
+      "terminal_columns": 132,
+      "synthetic_notice_visible_in_image": true
+    },
+    {
+      "image": "08-demo-stock-tool-result.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "DEMO — SYNTHETIC RESULTS",
+      "synthetic": true,
+      "sources": [
+        ".portfolio-build\\demo-results\\08-demo-stock-tool-result.txt",
+        "portfolio-images/demo-results.json"
+      ],
+      "display_formatter": "crewai-env\\Lib\\site-packages\\crewai\\events\\utils\\console_formatter.py",
+      "live_agent_execution": false,
+      "terminal_columns": 132,
+      "synthetic_notice_visible_in_image": true
+    },
+    {
+      "image": "09-demo-market-analysis.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "DEMO — SYNTHETIC RESULTS",
+      "synthetic": true,
+      "sources": [
+        ".portfolio-build\\demo-results\\09-demo-market-analysis.txt",
+        "portfolio-images/demo-results.json"
+      ],
+      "display_formatter": "crewai-env\\Lib\\site-packages\\crewai\\events\\utils\\console_formatter.py",
+      "live_agent_execution": false,
+      "terminal_columns": 132,
+      "synthetic_notice_visible_in_image": true
+    },
+    {
+      "image": "10-demo-trader-startup.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "DEMO — SYNTHETIC RESULTS",
+      "synthetic": true,
+      "sources": [
+        ".portfolio-build\\demo-results\\10-demo-trader-startup.txt",
+        "portfolio-images/demo-results.json"
+      ],
+      "display_formatter": "crewai-env\\Lib\\site-packages\\crewai\\events\\utils\\console_formatter.py",
+      "live_agent_execution": false,
+      "terminal_columns": 132,
+      "synthetic_notice_visible_in_image": true
+    },
+    {
+      "image": "11-demo-trading-decision.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "DEMO — SYNTHETIC RESULTS",
+      "synthetic": true,
+      "sources": [
+        ".portfolio-build\\demo-results\\11-demo-trading-decision.txt",
+        "portfolio-images/demo-results.json"
+      ],
+      "display_formatter": "crewai-env\\Lib\\site-packages\\crewai\\events\\utils\\console_formatter.py",
+      "live_agent_execution": false,
+      "terminal_columns": 132,
+      "synthetic_notice_visible_in_image": true
+    },
+    {
+      "image": "12-demo-final-result.png",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "type": "DEMO — SYNTHETIC RESULTS",
+      "synthetic": true,
+      "sources": [
+        ".portfolio-build\\demo-results\\12-demo-final-result.txt",
+        "portfolio-images/demo-results.json"
+      ],
+      "display_formatter": "crewai-env\\Lib\\site-packages\\crewai\\events\\utils\\console_formatter.py",
+      "live_agent_execution": false,
+      "terminal_columns": 132,
+      "synthetic_notice_visible_in_image": true
+    }
+  ],
+  "synthetic_demo": {
+    "authorized_by_user": true,
+    "images": [
+      "07-demo-crew-startup.png",
+      "08-demo-stock-tool-result.png",
+      "09-demo-market-analysis.png",
+      "10-demo-trader-startup.png",
+      "11-demo-trading-decision.png",
+      "12-demo-final-result.png"
+    ],
+    "fixture": "demo-results.json",
+    "live_api_or_llm_calls": false,
+    "formatter": "Existing CrewAI ConsoleFormatter; source unchanged.",
+    "tool_result": "Original get_stock_price function body evaluated against a local synthetic fixture."
+  },
+  "capture_scope": "Local CLI snapshot. The published repository additionally includes a Streamlit frontend and risk/horizon task inputs; source captures 02 and 06 predate those inputs.",
+  "source_hash_scope": "Hashes identify captured local source text, not the current published repository revision.",
+  "local_provenance_files_distributed": false
+}

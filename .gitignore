@@ -1,0 +1,22 @@
+# Local credentials
+.env
+.env.*
+!.env.example
+
+# Python environments and generated caches
+.venv/
+venv/
+crewai-env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local screenshot tooling and runtime downloads
+.portfolio-build/
+*.log
+
+# Operating-system files
+.DS_Store
+Thumbs.db

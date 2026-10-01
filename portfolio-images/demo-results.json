@@ -1,0 +1,22 @@
+{
+  "synthetic": true,
+  "live_agent_execution": false,
+  "description": "User-requested dummy outputs, formatted with the existing CrewAI console renderer.",
+  "quote_fixture": {
+    "synthetic": true,
+    "stock": "BMW",
+    "currency": "EUR",
+    "regularMarketPrice": 188.4,
+    "regularMarketChange": -1.6,
+    "regularMarketChangePercent": -0.8421052631578947
+  },
+  "tool_output": "Stock: BMW\nPrice: 188.4 EUR\nChange: -1.6 (-0.84%)",
+  "analyst_output": "SYNTHETIC DEMO RESULT — BMW\n\n- Current stock price: 188.4 EUR.\n- Daily price change: -1.6 EUR (-0.84%).\n- Volume: unavailable in the current tool output.\n- Volatility: cannot be estimated from a single price snapshot.\n- Observation: this fictional snapshot shows a modest daily decline.\n- Trend: sustained momentum cannot be established without price history.\n\nSummary: the available demo data supports a price-and-change summary only.",
+  "trader_output": "SYNTHETIC DEMO RESULT — BMW\n\nRecommendation: HOLD (scripted example)\n\n- Price: 188.4 EUR; daily change: -1.6 EUR (-0.84%).\n- Market activity: volume is unavailable in the current tool output.\n- Momentum: one negative daily change does not establish a sustained trend.\n- Risk-reward: insufficient history to evaluate a reliable entry or exit.\n\nRationale: this scripted example chooses HOLD because the limited snapshot\ndoes not provide enough evidence to justify a BUY or SELL decision.",
+  "recommendation": "HOLD",
+  "unsupported_market_fields": [
+    "volume",
+    "volatility",
+    "historical momentum"
+  ]
+}
