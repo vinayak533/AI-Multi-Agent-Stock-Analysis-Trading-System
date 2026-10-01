@@ -8,17 +8,17 @@ The project implements a compact agent workflow with prototype-level runtime and
 
 ## Contents
 
-- [Overview](#overview)
-- [Project Showcase](#project-showcase)
-- [Architecture and Workflow](#architecture-and-workflow)
-- [Technology Stack](#technology-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [Running the Application](#running-the-application)
-- [Engineering Notes and Limitations](#engineering-notes-and-limitations)
-- [Development and Contributions](#development-and-contributions)
-- [References](#references)
+- [🔎 Overview](#overview)
+- [📸 Project Showcase](#project-showcase)
+- [🤖 Architecture and Workflow](#architecture-and-workflow)
+- [🛠️ Technology Stack](#technology-stack)
+- [📁 Project Structure](#project-structure)
+- [🚀 Getting Started](#getting-started)
+- [⚙️ Configuration](#configuration)
+- [▶️ Running the Application](#running-the-application)
+- [📝 Engineering Notes and Limitations](#engineering-notes-and-limitations)
+- [🤝 Development and Contributions](#development-and-contributions)
+- [📚 References](#references)
 
 ## Overview
 
@@ -39,34 +39,43 @@ The stock-information tool currently returns **price and change only**. Volume, 
 
 **📸 These console examples use synthetic BMW data and scripted agent responses.** They illustrate the output format and workflow; they are not evidence of a successful live model run. Each demo image includes a visible label. The repository also contains a Streamlit frontend, which is not pictured in these captures.
 
+### 🏁 Final result
+
 ![Synthetic BMW final output in the CrewAI console, with a scripted HOLD recommendation](portfolio-images/12-demo-final-result.png)
 
 *Final-output example: a fictional price snapshot and a scripted HOLD rationale. The missing volume and price-history inputs remain explicit.*
 
-<details>
-<summary>Explore the tool, analyst, and trader stages</summary>
+### 🚀 Crew execution output
 
-### Stock-information tool
+![Scripted CrewAI console output showing the BMW analysis task and analyst startup](portfolio-images/07-demo-crew-startup.png)
+
+*Demo console output showing the crew and analyst starting the BMW analysis task. This is a scripted startup display.*
+
+### 💹 Stock snapshot result
 
 ![Synthetic tool output containing BMW price, currency, and daily change](portfolio-images/08-demo-stock-tool-result.png)
 
 *The existing research function was evaluated against a local fixture: 188.4 EUR, down 1.6 EUR (-0.84%). No Yahoo Finance request was made for this example.*
 
-### Analyst summary
+### 🔎 Analyst summary
 
 ![Scripted analyst summary explaining the fictional snapshot and unavailable market fields](portfolio-images/09-demo-market-analysis.png)
 
 *Illustrative analyst output distinguishes the available price snapshot from information the tool does not provide.*
 
-### Trading recommendation
+### 🤖 Trader task output
+
+![Scripted console output showing the BMW recommendation task and trader startup](portfolio-images/10-demo-trader-startup.png)
+
+*Demo console output showing the recommendation task handed to the Strategic Stock Trader. This is a scripted startup display.*
+
+### 🎯 Trading recommendation
 
 ![Scripted trader output showing a HOLD recommendation and its rationale](portfolio-images/11-demo-trading-decision.png)
 
 *Illustrative recommendation text and task-completion display. No live agent execution or order placement occurred.*
 
-</details>
-
-The [capture guide](portfolio-images/README.md) identifies all 12 images and their provenance. The [demo fixture](portfolio-images/demo-results.json) contains the synthetic values and scripted responses.
+📚 The [capture guide](portfolio-images/README.md) identifies all 12 images and their provenance. The [demo fixture](portfolio-images/demo-results.json) contains the synthetic values and scripted responses.
 
 ## Architecture and Workflow
 
@@ -102,19 +111,6 @@ flowchart LR
 | `agents/` | Agent roles, goals, backstories, LLM configuration, and tool access. |
 | `tasks/` | Input interpolation, task instructions, and expected text outputs. |
 | `tools/stock_research_tool.py` | Yahoo Finance lookup and price/change formatting. |
-
-<details>
-<summary>View the actual analyst configuration and stock-information tool</summary>
-
-![Source capture of the analyst agent with its configured Groq model and research tool](portfolio-images/03-financial-market-analyst.png)
-
-*Analyst configuration: a dedicated role, temperature 0, and access to the custom stock-information tool.*
-
-![Source capture of the Yahoo Finance research function and its price/change output](portfolio-images/05-live-stock-information-tool.png)
-
-*The tool's actual implementation makes its data contract visible: symbol, price, currency, and daily change.*
-
-</details>
 
 ## Technology Stack
 
