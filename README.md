@@ -1,83 +1,109 @@
-# 📈 AI Multi-Agent Stock Analysis & Trading System
+<div align="center">
 
-A Python application that uses two CrewAI agents to turn a Yahoo Finance stock snapshot into an analysis summary and a Buy, Sell, or Hold recommendation. A Streamlit interface provides ticker selection, risk-profile inputs, a price-history preview, and a downloadable text report; a Python entrypoint runs the same crew from the terminal.
+<h1>AI Multi-Agent Stock Analysis &amp; Trading System</h1>
 
-**Python · CrewAI · Groq / LiteLLM · yfinance · Streamlit**
+<p>For stock researchers: two CrewAI agents turn a Yahoo Finance snapshot into a risk-profile-aware Buy, Sell, or Hold rationale.</p>
 
-The project implements a compact agent workflow with prototype-level runtime and output handling. Recommendations are generated text; the application does not submit trades or manage a brokerage account.
+<p>
+  <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square" alt="Python 3.11 capture baseline" width="94">
+  <img src="https://img.shields.io/badge/Agents-CrewAI-DC2626?style=flat-square" alt="Agents orchestrated with CrewAI" width="104">
+  <img src="https://img.shields.io/badge/Inference-Groq-F55036?style=flat-square" alt="Groq inference via LiteLLM" width="108">
+  <img src="https://img.shields.io/badge/Data-yfinance-2563EB?style=flat-square" alt="Market data through yfinance" width="94">
+  <img src="https://img.shields.io/badge/UI-Streamlit-FF4B4B?style=flat-square" alt="Streamlit browser interface" width="162">
+</p>
 
-## Contents
+<img src="portfolio-images/12-demo-final-result.png" alt="Synthetic BMW final CrewAI output with a scripted HOLD rationale and explicit missing market inputs" width="960">
 
-- [🔎 Overview](#overview)
-- [📸 Project Showcase](#project-showcase)
-- [🤖 Architecture and Workflow](#architecture-and-workflow)
-- [🛠️ Technology Stack](#technology-stack)
-- [📁 Project Structure](#project-structure)
-- [🚀 Getting Started](#getting-started)
-- [⚙️ Configuration](#configuration)
-- [▶️ Running the Application](#running-the-application)
-- [📝 Engineering Notes and Limitations](#engineering-notes-and-limitations)
-- [🤝 Development and Contributions](#development-and-contributions)
-- [📚 References](#references)
+<p><em>Synthetic output example: fictional price data and a scripted HOLD rationale; no live model run or trade execution.</em></p>
 
-## Overview
+<p><a href="#demo-screenshots">Demo</a> | <a href="portfolio-images/README.md">Docs</a> | <a href="#architecture">Architecture</a> | <a href="#getting-started">Quickstart</a></p>
 
-The system separates market-data access, analysis, and recommendation generation into small modules with distinct responsibilities.
+</div>
 
-| Capability | Implementation |
-| --- | --- |
-| Market snapshot | A custom CrewAI tool reads price, currency, daily change, and percentage change through `yfinance`. |
-| Analysis | The Financial Market Analyst has access to the stock-information tool and produces a text summary. |
-| Recommendation | The Strategic Stock Trader evaluates the preceding task's context and produces a Buy, Sell, or Hold recommendation with a rationale. |
-| Profile inputs | Risk tolerance and investment horizon are interpolated into both task descriptions. |
-| Browser interface | Streamlit shows a one-year closing-price chart, analysis status, final text, captured debug logs, and a report-download button. |
-| Terminal entrypoint | `main.run()` accepts a ticker and optional profile arguments, then prints the crew result. |
+<details>
+<summary>Table of contents</summary>
 
-The stock-information tool currently returns **price and change only**. Volume, volatility, fundamentals, news sentiment, and computed technical indicators are not supplied by that tool. The browser's historical chart is a separate preview; its data is not passed into the agents.
+- [Problem and Solution](#problem-and-solution)
+- [Key Features](#key-features)
+- [Demo / Screenshots](#demo-screenshots)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Engineering Highlights](#engineering-highlights)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Roadmap](#roadmap)
+- [Author](#author)
+- [License and Acknowledgements](#license-and-acknowledgements)
 
-## Project Showcase
+</details>
 
-**📸 These console examples use synthetic BMW data and scripted agent responses.** They illustrate the output format and workflow; they are not evidence of a successful live model run. Each demo image includes a visible label. The repository also contains a Streamlit frontend, which is not pictured in these captures.
+<a id="problem-and-solution"></a>
 
-### 🏁 Final result
+## 🎯 Problem and Solution
 
-![Synthetic BMW final output in the CrewAI console, with a scripted HOLD recommendation](portfolio-images/12-demo-final-result.png)
+Stock research involves gathering market data, interpreting it, and forming a recommendation for an investment profile.
+This project separates those responsibilities: a Financial Market Analyst accesses a quote tool, then a Strategic Stock Trader uses the analysis context to produce a recommendation.
 
-*Final-output example: a fictional price snapshot and a scripted HOLD rationale. The missing volume and price-history inputs remain explicit.*
+The Python entrypoint and documented Streamlit interface share one crew and the same profile inputs.
+Runtime and output handling remain at prototype level; recommendations are text, with no order submission or brokerage-account management.
 
-### 🚀 Crew execution output
+<a id="key-features"></a>
 
-![Scripted CrewAI console output showing the BMW analysis task and analyst startup](portfolio-images/07-demo-crew-startup.png)
+## ✨ Key Features
 
-*Demo console output showing the crew and analyst starting the BMW analysis task. This is a scripted startup display.*
+- **Quote lookup:** a custom CrewAI tool retrieves price, currency, daily change, and percentage change through `yfinance`, giving the analyst a defined market snapshot.
+- **Sequential reasoning:** analysis precedes recommendation generation, so the trader receives the preceding task's context.
+- **Role-specific tool access:** only the analyst can retrieve market data, keeping acquisition separate from the trader's recommendation task.
+- **Profile-aware prompts:** ticker, risk tolerance, and investment horizon are interpolated into both task descriptions, tailoring the requested analysis and rationale.
+- **Shared entrypoints:** `main.run()` prints the same crew's output used by the documented browser interface, keeping orchestration in one place.
+- **Documented browser workflow:** ticker selection, a one-year closing-price preview, status, final text, debug logs, and a `.txt` download support reviewing a run.
 
-### 💹 Stock snapshot result
+**Snapshot boundary:** the tool supplies price and change only. It supplies no volume, volatility, fundamentals, news sentiment, or computed technical indicators. The browser's historical chart is a separate preview and is not passed to the agents.
 
-![Synthetic tool output containing BMW price, currency, and daily change](portfolio-images/08-demo-stock-tool-result.png)
+**Capture boundary:** the console screenshots were prepared from an earlier CLI snapshot. The repository includes `streamlit_app.py`, risk-profile inputs, and the Streamlit and pandas dependencies; those UI features are not pictured.
 
-*The existing research function was evaluated against a local fixture: 188.4 EUR, down 1.6 EUR (-0.84%). No Yahoo Finance request was made for this example.*
+<details>
+<summary>Feature examples: snapshot and analyst output</summary>
 
-### 🔎 Analyst summary
+<img src="portfolio-images/08-demo-stock-tool-result.png" alt="Synthetic stock-tool output showing BMW at 188.4 EUR with a daily change of minus 1.6 EUR and minus 0.84 percent" width="960">
 
-![Scripted analyst summary explaining the fictional snapshot and unavailable market fields](portfolio-images/09-demo-market-analysis.png)
+*The research function was evaluated against a local fixture: 188.4 EUR, down 1.6 EUR (-0.84%). No Yahoo Finance request was made for this example.*
 
-*Illustrative analyst output distinguishes the available price snapshot from information the tool does not provide.*
+<img src="portfolio-images/09-demo-market-analysis.png" alt="Scripted analyst summary separating the fictional price snapshot from unavailable volume and historical inputs" width="960">
 
-### 🤖 Trader task output
+*Illustrative analyst output distinguishes available quote fields from market evidence the tool does not provide.*
 
-![Scripted console output showing the BMW recommendation task and trader startup](portfolio-images/10-demo-trader-startup.png)
+</details>
 
-*Demo console output showing the recommendation task handed to the Strategic Stock Trader. This is a scripted startup display.*
+<a id="demo-screenshots"></a>
+<a id="project-showcase"></a>
 
-### 🎯 Trading recommendation
+## 📸 Demo / Screenshots
 
-![Scripted trader output showing a HOLD recommendation and its rationale](portfolio-images/11-demo-trading-decision.png)
+**The console examples use synthetic BMW data and scripted agent responses.** They illustrate output format and task handoff; they do not establish a successful live model run. Each demo image carries a visible label. The documented Streamlit frontend is not pictured.
 
-*Illustrative recommendation text and task-completion display. No live agent execution or order placement occurred.*
+<details open>
+<summary>Console workflow gallery</summary>
 
-📚 The [capture guide](portfolio-images/README.md) identifies all 12 images and their provenance. The [demo fixture](portfolio-images/demo-results.json) contains the synthetic values and scripted responses.
+<img src="portfolio-images/07-demo-crew-startup.png" alt="Scripted CrewAI startup showing the BMW analysis task and Financial Market Analyst" width="960">
 
-## Architecture and Workflow
+*Scripted crew and analyst startup for the BMW analysis task.*
+
+<img src="portfolio-images/10-demo-trader-startup.png" alt="Scripted recommendation-task handoff to the Strategic Stock Trader" width="960">
+
+*Scripted handoff from analysis to the trader's recommendation task.*
+
+<img src="portfolio-images/11-demo-trading-decision.png" alt="Scripted Strategic Stock Trader HOLD recommendation with its rationale and task-completion display" width="960">
+
+*Illustrative HOLD rationale and task completion; no live agent execution or order placement occurred.*
+
+</details>
+
+The [capture guide](portfolio-images/README.md) indexes all 12 images and their provenance. The [demo fixture](portfolio-images/demo-results.json) records the synthetic values and scripted responses. Source captures 02 and 06 predate the profile inputs; the local capture used Python 3.11.15 and CrewAI 1.8.1.
+
+<a id="architecture"></a>
+
+## 🏗️ Architecture
 
 ```mermaid
 flowchart LR
@@ -97,68 +123,48 @@ flowchart LR
     Preview --> Yahoo
 ```
 
-1. **Collect inputs.** The browser collects a ticker, risk tolerance, and investment horizon. The Python entrypoint accepts the same inputs with defaults.
-2. **Start the crew.** `crew.py` lists the analyst and trader tasks in that order. It relies on CrewAI's default sequential process.
-3. **Analyze the snapshot.** The analyst can call `Live Stock Information Tool`, which reads `yf.Ticker(symbol).info` and formats the selected fields as text.
-4. **Generate a recommendation.** CrewAI supplies prior task output as context to the trader. The trader has no direct tools; it reasons over that context and its task instructions.
-5. **Present the final output.** The terminal prints the crew result. Streamlit displays its text, exposes captured logs, and offers a `.txt` download. The UI does not display separate analyst and trader reports.
+Both the Streamlit interface and terminal entrypoint use the same sequential agent workflow.
 
-| Component | Responsibility |
-| --- | --- |
-| `streamlit_app.py` | UI, historical preview, background worker, result queues, session state, and report download. |
-| `main.py` | Callable Python entrypoint and default terminal execution. |
-| `crew.py` | Agent/task assembly, execution order, verbose output, and tracing configuration. |
-| `agents/` | Agent roles, goals, backstories, LLM configuration, and tool access. |
-| `tasks/` | Input interpolation, task instructions, and expected text outputs. |
-| `tools/stock_research_tool.py` | Yahoo Finance lookup and price/change formatting. |
+- **Execution order:** `crew.py` lists analyst and trader tasks in that order, relying on CrewAI's default sequential process and prior-task context propagation.
+- **Data boundary:** the analyst's `Live Stock Information Tool` reads `yf.Ticker(symbol).info` and formats selected fields as text; the trader has no direct tools.
+- **Module boundaries:** agents own roles, goals, backstories, LLM configuration, and tool access; tasks own input interpolation, instructions, and expected outputs.
+- **Shared orchestration:** both documented entrypoints call `stock_crew`; the terminal prints the crew result, while the browser displays final text rather than separate analyst and trader reports.
+- **UI execution trade-off:** the documented frontend uses a background worker, queues, session state, and console capture. Its independent history request does not expand the agents' evidence.
 
-## Technology Stack
+<a id="tech-stack"></a>
 
-| Technology | Role |
-| --- | --- |
-| Python | Application and tool implementation; Python 3.11 is the baseline used for the local capture run. |
-| CrewAI | Agents, task execution, tool registration, and sequential context propagation. |
-| Groq + LiteLLM | Hosted inference for the configured `groq/llama-3.3-70b-versatile` model. |
-| `yfinance` | Market-snapshot lookup and one-year history for the UI preview. |
-| Streamlit | Browser interface, chart, status display, session state, and text download. |
-| `python-dotenv` | Local environment-variable loading. |
-| `threading`, `queue`, `io` | UI worker execution, result transfer, and console capture. |
+## 🧰 Tech Stack
 
-`requirements.txt` also declares `crewai-tools` and `pandas`. The custom tool uses CrewAI's own decorator; `pandas` is imported by the frontend. Dependencies are currently unpinned, and there is no lockfile.
+| Layer | Tool | Purpose and evidence |
+| --- | --- | --- |
+| Frontend | Streamlit, pandas | Chart, status, session state, and report download in `streamlit_app.py`. |
+| Backend | Python | Application and custom tool; Python 3.11 was the local capture baseline. |
+| Backend | `threading`, `queue`, `io` | Documented UI worker, result transfer, and console capture. |
+| Backend | `python-dotenv` | Loads local environment variables; declared in `requirements.txt`. |
+| AI-ML | CrewAI | Agent orchestration, tool registration, sequential tasks, and context propagation. |
+| AI-ML | Groq via LiteLLM | Hosted inference for the source-configured `groq/llama-3.3-70b-versatile` model. |
+| AI-ML | `crewai-tools` | Declared dependency; the custom stock tool uses CrewAI's own decorator. |
+| Data | `yfinance` / Yahoo Finance | Quote lookup and the documented UI's separate one-year historical preview. |
 
-## Project Structure
+Dependencies are unpinned and there is no lockfile. `requirements.txt` declares `crewai`, `crewai-tools`, `python-dotenv`, `yfinance`, `pandas`, and `streamlit`.
 
-```text
-AI-Multi-Agent-Stock-Analysis-Trading-System/
-├── README.md
-├── .gitignore
-├── .env.example
-├── requirements.txt
-├── streamlit_app.py
-├── main.py
-├── crew.py
-├── agents/
-│   ├── analyst_agent.py
-│   └── trader_agent.py
-├── tasks/
-│   ├── analyse_task.py
-│   └── trade_task.py
-├── tools/
-│   └── stock_research_tool.py
-└── portfolio-images/
-    ├── README.md
-    ├── manifest.json
-    ├── demo-results.json
-    └── *.png
-```
+<a id="engineering-highlights"></a>
 
-Create `.env` locally from the example. Virtual environments, credentials, and generated caches belong outside version control.
+## ⚙️ Engineering Highlights
 
-## Getting Started
+- **Agent responsibility:** acquisition and recommendation require different access. **Approach:** give the analyst the quote tool and pass its task output to a tool-free trader. **Result:** the documented workflow separates data retrieval from recommendation generation.
+- **Entrypoint consistency:** browser and terminal inputs need the same orchestration. **Approach:** reuse `stock_crew` and interpolate profile inputs into the existing tasks. **Result:** both documented paths execute one agent/task definition.
+- **Browser execution:** a crew run must deliver output to the UI. **Approach:** the documented frontend runs a daemon worker and transfers results through queues. **Limit:** the crew is shared, `sys.stdout` replacement is process-wide, and a 300-second wait does not cancel the worker; multi-user job isolation is not implemented.
+- **Recommendation interpretation:** prose output needs a UI action label. **Approach:** tasks request text and the documented badge uses keyword matching. **Limit:** no structured action schema, confidence score, or recommendation validation exists; text mentioning multiple actions can be misclassified.
+- **Incomplete market data:** quote fields may be unavailable. **Approach:** the tool reports a missing price as text, and demo outputs expose missing evidence. **Limit:** missing change fields and transport failures may raise errors; the separate UI chart supplies no historical input to the agents.
 
-### 1. Clone and create an environment
+<a id="getting-started"></a>
 
-Use Python 3.11 for the setup below, Git, and a Groq API key with access to the configured model. Live runs require network access to Groq and Yahoo Finance.
+## 🚀 Getting Started
+
+Use Python 3.11, Git, and a Groq API key with access to the configured model. Live runs require network access to Groq and Yahoo Finance and may incur inference costs. The commands below are preserved from the original README.
+
+### Install
 
 ```bash
 git clone https://github.com/vinayak533/AI-Multi-Agent-Stock-Analysis-Trading-System.git
@@ -166,7 +172,7 @@ cd AI-Multi-Agent-Stock-Analysis-Trading-System
 python -m venv .venv
 ```
 
-Activate it on macOS or Linux:
+Activate on macOS or Linux:
 
 ```bash
 source .venv/bin/activate
@@ -178,64 +184,53 @@ Or in Windows PowerShell:
 .\.venv\Scripts\Activate.ps1
 ```
 
-### 2. Install dependencies
-
 ```bash
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt "crewai[litellm]"
 ```
 
-The additional CrewAI extra installs the LiteLLM backend used for Groq; it is not explicitly included in the repository's requirements. See [CrewAI's Groq configuration guidance](https://docs.crewai.com/en/concepts/llms#groq).
+The CrewAI extra installs the LiteLLM backend used for Groq; it is not explicitly included in `requirements.txt`. See [CrewAI's Groq configuration guidance](https://docs.crewai.com/en/concepts/llms#groq).
 
-### 3. Configure credentials
+### Configure
 
-Copy `.env.example` to `.env` and replace the placeholder with your own key:
+Copy `.env.example` to a local `.env` and supply your own value for **`GROQ_API_KEY`**. This is the only documented credential variable. Manage keys in the [Groq console](https://console.groq.com/keys); `.gitignore` excludes `.env`.
 
-```dotenv
-GROQ_API_KEY=your_groq_api_key
-```
-
-Use the [Groq console](https://console.groq.com/keys) to manage keys. Keep `.env` local; `.gitignore` excludes it.
-
-## Configuration
-
-| Setting | Current value / source |
+| Setting | Documented value / source |
 | --- | --- |
-| API credential | `GROQ_API_KEY` in the environment or local `.env`. |
-| LLM model | `groq/llama-3.3-70b-versatile`, set in both agent modules. |
-| Temperature | `0` for both agents; this reduces sampling variation but does not guarantee identical responses. |
-| Task order | Analysis, then trading recommendation, as listed in `crew.py`. |
-| Execution logging | `verbose=True` on the agents and crew. |
-| Tracing | `tracing=True` in `crew.py`; provider/framework setup controls trace availability. |
-| Default ticker | `BMW` for `python main.py`; `AAPL` in Streamlit. |
-| Risk tolerance | UI values: `Low`, `Medium`, `High`; Python default: `Medium`. |
-| Investment horizon | UI values: `Short-term`, `Medium-term`, `Long-term`; Python default: `Medium-term`. |
+| Model | `groq/llama-3.3-70b-versatile`, set in both agent modules; no `LLM_MODEL` environment variable. |
+| Temperature | `0` for both agents; reduces sampling variation without guaranteeing identical responses. |
+| Task order | Analysis, then recommendation, as listed in `crew.py`. |
+| Logging | `verbose=True` on agents and crew. |
+| Tracing | `tracing=True` in `crew.py`; availability depends on provider/framework setup. |
+| Default ticker | `BMW` for terminal execution; `AAPL` in the documented UI. |
+| Risk tolerance | UI: `Low`, `Medium`, `High`; Python default: `Medium`. |
+| Investment horizon | UI: `Short-term`, `Medium-term`, `Long-term`; Python default: `Medium-term`. |
 
-The model is configured in source, not through an `LLM_MODEL` environment variable. Risk tolerance and investment horizon guide the prompts; there is no numerical risk model or position-sizing engine.
+Risk tolerance and horizon guide prompts; there is no numerical risk model or position-sizing engine.
 
-During the local CLI capture, Groq returned `model_not_found` for the configured model. A successful live run was therefore not captured. Verify your account's model access against the [Groq model catalog](https://console.groq.com/docs/models); the synthetic screenshots do not verify that access.
+**Recorded provider limitation:** Groq returned `model_not_found` during the local CLI capture, so no successful live run was captured. Check account access against the [Groq model catalog](https://console.groq.com/docs/models); the synthetic screenshots do not verify access.
 
-## Running the Application
+### Run
 
-### Streamlit interface
-
-```bash
-python -m streamlit run streamlit_app.py
-```
-
-Open the local URL printed by Streamlit. Enter a Yahoo Finance ticker, choose a risk tolerance and investment horizon, and select **Start Analysis**. A completed run displays the final crew text, a recommendation badge, debug logs, and **Download Full Report**.
-
-The price-history preview loads independently of the analysis request. Quote availability and timeliness depend on Yahoo Finance and the selected symbol.
-
-### Terminal
+Terminal:
 
 ```bash
 python main.py
 ```
 
-This runs the source-defined `BMW` example with `Medium` risk tolerance and a `Medium-term` horizon. Use a symbol recognized by Yahoo Finance; the entrypoint does not accept command-line ticker arguments.
+This executes the source-defined `BMW` example with `Medium` risk tolerance and a `Medium-term` horizon. Use a Yahoo Finance-recognized symbol; this entrypoint does not accept command-line ticker arguments.
 
-### Python integration
+Streamlit interface:
+
+```bash
+python -m streamlit run streamlit_app.py
+```
+
+Open Streamlit's printed URL, enter a ticker and profile, and select **Start Analysis**. Completion displays final crew text, a recommendation badge, debug logs, and **Download Full Report**.
+
+The historical preview loads independently. Quote availability and timeliness depend on Yahoo Finance and the selected symbol.
+
+Python integration:
 
 ```python
 from dotenv import load_dotenv
@@ -247,44 +242,98 @@ from main import run
 run("AAPL", risk_tolerance="Low", investment_horizon="Long-term")
 ```
 
-`run()` prints the result and does not return it. Call `stock_crew.kickoff(inputs=...)` directly if your integration needs the `CrewOutput` object.
+`run()` prints the result and does not return it. Call `stock_crew.kickoff(inputs=...)` directly when an integration needs the `CrewOutput` object.
 
-### Troubleshooting
+<details>
+<summary>Troubleshooting</summary>
 
 | Symptom | Check |
 | --- | --- |
-| `model_not_found` or authentication error | Confirm the key and access to the model configured in both agent modules. |
+| `model_not_found` or authentication error | Confirm the key and model access for both agent modules. |
 | Missing LiteLLM backend | Install `"crewai[litellm]"` in the active environment. |
-| Missing price or empty history | Check the exact Yahoo Finance symbol and service availability; the snapshot and chart use separate requests. |
-| Interpreter or binary-import error | Recreate the virtual environment with one Python version instead of copying an environment from another machine. |
-| UI waits without a result | Inspect the terminal and captured errors. The UI waits up to 300 seconds for its worker but does not cancel it on timeout. |
+| Missing UI dependencies | Install `requirements.txt` in the active environment, including Streamlit and pandas. |
+| Missing price or empty history | Check the Yahoo Finance symbol and service availability; snapshot and chart use separate requests. |
+| Interpreter or binary-import error | Recreate the environment with one Python version rather than copying it from another machine. |
+| UI waits without a result | Inspect terminal output and captured errors; the documented 300-second worker wait does not cancel execution. |
 
-## Engineering Notes and Limitations
+</details>
 
-- **Role-specific tool access.** Only the analyst receives the market-data tool. The trader works from the analysis context, keeping data acquisition separate from the recommendation task.
-- **Small, explicit modules.** Agents, task prompts, orchestration, and the tool are defined separately, making changes to each responsibility easy to inspect.
-- **One crew behind two entrypoints.** The browser and Python entrypoint both call the same `stock_crew`; profile inputs are interpolated into the existing task descriptions.
-- **Text-oriented contracts.** The tool returns a string and the tasks request prose. No structured action schema, confidence score, or recommendation validation is implemented. The UI badge uses keyword matching, which can misclassify text mentioning multiple actions.
-- **Limited market evidence.** The tool has no historical-series, volume, sentiment, or fundamentals output. It reports a missing price as text; missing change fields or transport failures may still raise errors. The UI's separate chart does not extend the agent's inputs.
-- **Prototype concurrency.** Streamlit runs the crew in a daemon thread, transfers results through queues, and captures output by replacing process-wide `sys.stdout`. The crew is shared, and the worker has no cancellation mechanism. This is not an isolated multi-user job service.
+<a id="project-structure"></a>
 
-There is currently no automated test suite, CI workflow, backtesting harness, or deployment configuration in the repository. Pinning dependencies, validating structured outputs, expanding the data contract, and isolating worker state would be concrete next steps before a production deployment.
+## 📂 Project Structure
 
-## Development and Contributions
+```text
+AI-Multi-Agent-Stock-Analysis-Trading-System/
+├── README.md                  # Workflow, setup, demo provenance, and limitations
+├── .gitignore                 # Excludes credentials, environments, and caches
+├── .env.example               # Groq credential variable template
+├── requirements.txt           # Unpinned Python dependencies
+├── streamlit_app.py           # Browser UI, historical preview, worker, and report download
+├── main.py                    # Callable Python entrypoint and terminal defaults
+├── crew.py                    # Agent/task assembly, ordering, logging, and tracing
+├── agents/                    # Analyst/trader roles, LLM settings, and tool access
+│   ├── analyst_agent.py
+│   └── trader_agent.py
+├── tasks/                     # Analysis/recommendation prompts and expected outputs
+│   ├── analyse_task.py
+│   └── trade_task.py
+├── tools/                     # Yahoo Finance lookup and price/change formatting
+│   └── stock_research_tool.py
+└── portfolio-images/          # Twelve PNG captures, provenance, and synthetic fixture
+    ├── README.md
+    ├── manifest.json
+    ├── demo-results.json
+    └── *.png
+```
 
-Start with the [workflow](#architecture-and-workflow), then inspect the module relevant to your change. Keep new market fields in the tool layer, agent behavior in `agents/`, and output expectations in `tasks/`. Document any additional dependencies or configuration.
+The tree reflects the published repository. `streamlit_app.py` provides the UI, historical preview, worker, queues, session state, and report download. Keep local credentials, environments, and generated caches outside version control.
 
-Run a syntax check from the repository root:
+<a id="roadmap"></a>
+
+## 🗺️ Roadmap
+
+- [x] Separate agent roles, task prompts, orchestration, and the quote tool into explicit modules.
+- [ ] Pin dependencies and record a reproducible environment before production deployment.
+- [ ] Validate structured recommendations instead of deriving actions from prose keywords.
+- [ ] Expand the market-data contract and handle missing fields and provider failures explicitly.
+- [ ] Isolate worker state and console capture, with a cancellation mechanism for timed-out jobs.
+
+No automated test suite, CI workflow, backtesting harness, or deployment configuration is present in the repository snapshot.
+
+<details>
+<summary>Development and contribution guidance</summary>
+
+Start with the [architecture](#architecture), then inspect the relevant module. Keep market fields in `tools/`, agent behavior in `agents/`, and output expectations in `tasks/`; document additional dependencies and configuration.
+
+Run this syntax-only check from the repository root:
 
 ```bash
 python -m compileall -q main.py crew.py streamlit_app.py agents tasks tools
 ```
 
-This checks syntax only. For runtime changes, also exercise the affected entrypoint with valid provider access and record the ticker, model, dependency versions, and outcome. Live runs invoke external services and may incur inference costs.
+It is not an automated test suite. For runtime changes, exercise the affected entrypoint with valid provider access and record ticker, model, dependency versions, and outcome. Live runs call external services and may incur inference costs.
 
-Open an [issue](https://github.com/vinayak533/AI-Multi-Agent-Stock-Analysis-Trading-System/issues) for a reproducible problem or a focused proposal. Submit a pull request with the problem, changed behavior, and validation performed. Useful areas include missing-field handling, provider-failure handling, structured recommendations, and worker isolation. Keep credentials out of examples, logs, and commits; label any synthetic data or demo results clearly.
+Open an [issue](https://github.com/vinayak533/AI-Multi-Agent-Stock-Analysis-Trading-System/issues) for a reproducible problem or focused proposal. A pull request should describe the problem, changed behavior, and validation performed. Missing-field handling, provider failures, structured recommendations, and worker isolation are documented contribution areas.
 
-## References
+Keep credentials out of examples, logs, and commits. Label synthetic data and demo results clearly.
+
+</details>
+
+<a id="author"></a>
+
+## 👤 Author
+
+**Vinayak K V** · AI/ML Engineer at AMnova Technologies
+
+[GitHub](https://github.com/vinayak533) · [LinkedIn](https://linkedin.com/in/vinayak-kv-ds) · [Email](mailto:vinayakkvjob@gmail.com)
+
+Building production multi-agent AI systems. Open to technical discussions and collaboration.
+
+<a id="license-and-acknowledgements"></a>
+
+## 📄 License and Acknowledgements
+
+Technology references documented in the original README:
 
 - [CrewAI: LLM configuration](https://docs.crewai.com/en/concepts/llms)
 - [CrewAI: execution processes](https://docs.crewai.com/en/concepts/processes)
